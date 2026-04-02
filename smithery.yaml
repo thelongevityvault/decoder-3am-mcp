@@ -1,0 +1,4 @@
+startCommand:
+  type: http
+  configSchema: {}
+  url: https://tlv-mcp-server.katfu111111.workers.dev/mcp

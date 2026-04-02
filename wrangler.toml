@@ -1,0 +1,16 @@
+name = "tlv-mcp-server"
+main = "src/index.js"
+compatibility_date = "2025-04-01"
+compatibility_flags = ["nodejs_compat"]
+
+[[migrations]]
+tag = "v2"
+deleted_classes = ["TLVMcpAgent"]
+
+[observability]
+enabled = true
+
+# KV namespace for analytics logging + rate limiting
+[[kv_namespaces]]
+binding = "MCP_LOGS"
+id = "b91dc70ae8c548e1be05f8ce5d09280f"

@@ -1,0 +1,44 @@
+{
+  "name": "tlv-mcp-server-cf",
+  "version": "1.0.0",
+  "description": "Sleep disruption cause classifier from The Longevity Vault. Identifies the biological cause behind 3AM wakeups using a 5-cause framework — autonomic, metabolic, inflammatory, hormonal, and circadian. Built on the Model Context Protocol (MCP) for AI agent integration.",
+  "type": "module",
+  "license": "MIT",
+  "author": {
+    "name": "Kat Fu, M.S., M.S.",
+    "url": "https://thelongevityvault.com/about/"
+  },
+  "homepage": "https://sleep.thelongevityvault.com/decoder",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thelongevityvault/decoder-3am"
+  },
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "sleep",
+    "sleep-disruption",
+    "3am-wakeups",
+    "insomnia",
+    "health",
+    "longevity",
+    "sleep-science",
+    "ai-tools",
+    "cloudflare-workers"
+  ],
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node test-scenarios.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.3.6",
+    "agents": "^0.0.50",
+    "@anthropic-ai/sdk": "^0.39.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.14.0"
+  }
+}
