@@ -1,19 +1,6 @@
 {
-  "name": "decoder-3am-mcp",
-  "display_name": "3AM Decoder — Sleep Cause Classifier",
-  "description": "Sleep disruption cause classifier using The Longevity Vault's 5-cause framework. Identifies the biological mechanism behind 3am wakeups from symptom descriptions.",
-  "author": {
-    "name": "Kat Fu, M.S., M.S.",
-    "url": "https://thelongevityvault.com/about/"
-  },
-  "homepage": "https://sleep.thelongevityvault.com/decoder",
-  "license": "MIT",
-  "transport": "streamable-http",
-  "server_url": "https://tlv-mcp-server.katfu111111.workers.dev/mcp",
-  "tools": [
-    "classify_sleep_cause",
-    "get_cause_info",
-    "list_causes",
-    "get_decoder_url"
+  "$schema": "https://glama.ai/mcp/schemas/server.json",
+  "maintainers": [
+    "pine-harbor"
   ]
 }
