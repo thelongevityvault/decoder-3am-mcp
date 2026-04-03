@@ -1,17 +1,16 @@
 /**
- * Standalone HTTP server for Docker/Glama health checks.
+ * Standalone stdio server for Glama health checks.
  * Wraps the same MCP server logic used on Cloudflare Workers.
+ * Glama's mcp-proxy handles HTTP — this just needs stdio transport.
  */
 
-import { createServer } from "node:http";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import { causes, causeIds } from "./src/causes.js";
 import { classifySleepCause } from "./src/classifier.js";
 
 const SERVER_VERSION = "1.0.0";
-const PORT = process.env.PORT || 3000;
 
 function buildMcpServer() {
   const server = new McpServer({
@@ -79,44 +78,6 @@ function buildMcpServer() {
   return server;
 }
 
-const httpServer = createServer(async (req, res) => {
-  const url = new URL(req.url, `http://localhost:${PORT}`);
-
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, mcp-session-id, mcp-protocol-version");
-  res.setHeader("Access-Control-Expose-Headers", "mcp-session-id");
-
-  if (req.method === "OPTIONS") {
-    res.writeHead(204);
-    res.end();
-    return;
-  }
-
-  if (url.pathname === "/health") {
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ status: "ok", version: SERVER_VERSION }));
-    return;
-  }
-
-  if (url.pathname === "/" && req.method === "GET") {
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ name: "tlv-3am-decoder", version: SERVER_VERSION, status: "running" }));
-    return;
-  }
-
-  if (url.pathname === "/mcp" || url.pathname === "/mcp/") {
-    const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined, enableJsonResponse: true });
-    const server = buildMcpServer();
-    await server.connect(transport);
-    await transport.handleRequest(req, res);
-    return;
-  }
-
-  res.writeHead(404);
-  res.end("Not found");
-});
-
-httpServer.listen(PORT, () => {
-  console.log(`3AM Decoder MCP server running on port ${PORT}`);
-});
+const server = buildMcpServer();
+const transport = new StdioServerTransport();
+await server.connect(transport);
